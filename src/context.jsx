@@ -45,7 +45,7 @@ export const AppProvider = ({children}) => {
 
 
       useEffect(() => {
-        const cities = ["Warszawa", "Babimost"];
+        const cities = ["Poznań", "Warszawa", "Babimost"];
         setCitiesList(cities);
       }, [])
 
@@ -60,7 +60,8 @@ export const AppProvider = ({children}) => {
         setSelectedCity,
         handleChangeCity,
         handleWeather, 
-        getWeather
+        getWeather,
+        setSelectedCity
     }
 
     return <AppContext.Provider value={{data, functions}}>
