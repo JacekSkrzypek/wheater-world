@@ -1,9 +1,11 @@
 import React from 'react';
 
 const WeatherData = ({data}) => {
+
         const {name} = data;
-        const { icon } = data.weather[0]
-        console.log(data.weather[0]);
+        const { main: {temp} } = data;
+        const { icon, description } = data.weather[0]
+       // console.log(data.weather[0]);
     return (
         
         <div className='weather-data'>
@@ -13,11 +15,16 @@ const WeatherData = ({data}) => {
                     <img className='weather-data__container__block__image' src={`http://openweathermap.org/img/wn/${icon}@2x.png`} alt="" />
                 </div>
                 <div className='weather-data__container__block'>
-                    <img className='weather-data__container__block__image' src={`http://openweathermap.org/img/wn/${icon}@2x.png`} alt="" />
+                    <p className='weather-data__container__block__temp'>
+                        {Math.round(temp - 273.15)}°C
+                    </p>
                 </div>
                 <div className='weather-data__container__block'>
                     <img className='weather-data__container__block__image' src={`http://openweathermap.org/img/wn/${icon}@2x.png`} alt="" />
                 </div>
+            </div>
+            <div className='weather-data__description'>
+                {description}
             </div>
         </div>
     );

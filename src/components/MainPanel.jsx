@@ -1,24 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
-import axios from 'axios';
 import WeatherData from './WeatherData';
-
+import { useGlobalContext } from '../context';
 
 const MainPanel = () => {
-    const [city, setCity] = useState('');
-    const [weatherData, setWeatherData] = useState();
 
-    const handleWeather = () => {
-        const apiKey = process.env.REACT_APP_API_KEY;
-        axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
-            .then(res => {
-                setWeatherData(res.data);
-            })
-    }
-
-    const handleChangeCity = (event) => {
-        setCity(event.target.value);
-    }
+    const {functions: { handleWeather, handleChangeCity },
+           data: { weatherData } } = useGlobalContext();
 
     return (
         <article className='weather__article main-panel'>

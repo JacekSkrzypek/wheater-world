@@ -1,3 +1,4 @@
+import CitiesList from './components/CitiesList';
 import MainPanel from './components/MainPanel';
 import './style/main.scss';
 
@@ -5,7 +6,7 @@ function App() {
   return (
    <main>
     <section className='weather'>
-      <article className='weather__article weather__cities'></article>
+      <CitiesList />
       <MainPanel />
     </section>
    </main>

@@ -1,6 +1,7 @@
 @use 'variables.scss' as *;
 @use 'mainPanel.scss';
 @use './wheaterData.scss';
+@use './citiesList.scss';
 
 * {
     box-sizing: border-box;
