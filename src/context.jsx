@@ -8,7 +8,11 @@ export const AppProvider = ({children}) => {
     const [citiesList, setCitiesList] = useState([]);
     const [weatherData, setWeatherData] = useState();
     const [citiesData, setCitiesData] = useState([]);
+    const [timeoutId, setTimeoutId] = useState(null);
 
+    
+
+    const cities = ["Poznań", "Warszawa", "Włoszczowa", "Sochaczew"];
 
     const apiKey = process.env.REACT_APP_API_KEY;
 
@@ -18,6 +22,7 @@ export const AppProvider = ({children}) => {
     }
 
     const getWeather = (city) => {
+        console.log(`miasto: ${city}`)
         return axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
         .then(res => {
             return res.data;
@@ -31,21 +36,40 @@ export const AppProvider = ({children}) => {
         setSelectedCity(event.target.value);
     }
 
+
+
     useEffect(() => {
         const weatherList = [];
-        citiesList.map((city) => {
-           getWeather(city)
-            .then(res => {
-                weatherList.push(res);
-                setCitiesData(weatherList);
-            });
-        })
+            citiesList.map((city) => {
+                getWeather(city)
+                 .then(res => {
+                     weatherList.push(res);
+                 }).then(res => {
+                     setCitiesData(weatherList);
+                 });
+             })
+       
+
 
       }, [citiesList]);
 
+      useEffect(() => {
+
+        if (timeoutId) {
+            clearTimeout(timeoutId);
+        }
+
+        const id = setTimeout(() => {
+        handleWeather();
+            
+          }, 400);
+
+        setTimeoutId(id);
+
+
+      }, [selectedCity])
 
       useEffect(() => {
-        const cities = ["Poznań", "Warszawa", "Babimost"];
         setCitiesList(cities);
       }, [])
 

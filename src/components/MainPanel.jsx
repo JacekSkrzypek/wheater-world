@@ -6,7 +6,7 @@ import { useGlobalContext } from '../context';
 const MainPanel = () => {
 
     const {functions: { handleWeather, handleChangeCity },
-           data: { weatherData } } = useGlobalContext();
+           data: { weatherData, selectedCity } } = useGlobalContext();
 
     return (
         <article className='weather__article main-panel'>
@@ -14,7 +14,14 @@ const MainPanel = () => {
                 <input onChange={handleChangeCity} className='main-panel__search__input'></input>
                 <AiOutlineSearch onClick={handleWeather}  className='main-panel__search__icon'></AiOutlineSearch>
             </div>
-            {weatherData && <WeatherData data={weatherData}/>}
+            {weatherData ? <WeatherData data={weatherData}/> : 
+                selectedCity && (
+                <div className='searching'>
+                    searching for a city
+                </div>
+                )
+            
+            }
         </article>
     );
 };

@@ -10,20 +10,28 @@ const CitiesList = () => {
                 setSelectedCity(city);
               };
 
-            useEffect(() => {
-                handleWeather();
+              console.log(citiesData);
+          
+    const [data, setData] = useState([]);
 
-              }, [selectedCity])
+    useEffect(() => {
+        setData(citiesData);
+        console.log(citiesData);
+    }, [citiesData])
 
     return (
+        
         <article className='weather__article weather__cities'>
+            {citiesList !== null && (
             <ul>
                 {citiesList.map((city, i) => {   
                         try {
-                            const { main: {temp} } = citiesData[i];
-                            const { icon } = citiesData[i].weather[0];
+                            const { main: {temp} } = data[i];
+                            const { icon } = data[i].weather[0];
                             return (
-                                <li className='weather__cities__city' onClick={() => handleSelectCity(city)}>
+                                <li className='weather__cities__city' 
+                                    onClick={() => handleSelectCity(city)}
+                                    key={i}>
                                     <p>{city}</p>
                                     <div className='weather__cities__city__information'>
                                         <img className='weather__cities__city__information__icon' src={`http://openweathermap.org/img/wn/${icon}@2x.png`} alt="" />
@@ -33,11 +41,12 @@ const CitiesList = () => {
                               );
                         }
                         catch(error) {
-                            console.log(error)
+                            console.log(error.message)
                         }
                        
                 })}
-            </ul>
+            </ul> )}
+           
         </article>
     );
 };
