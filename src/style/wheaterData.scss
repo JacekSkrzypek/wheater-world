@@ -6,6 +6,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    position: relative;
 
     &__container {
         width: 100%;
@@ -59,5 +60,24 @@
         font-size: 2rem;
         font-weight: bold;
         font-style: italic;
+    }
+
+    .like-button {
+        background: none;
+        border: none;
+        position: absolute;
+        top: 1.5rem;
+        left: 0rem;
+        font-size: 4rem;
+        color: $light-green;
+
+        &__icon {
+            cursor: pointer;
+            transition: all 0.1s ease;
+        }
+
+        &__icon:hover {
+            color: $aquamarine;
+        }
     }
 }

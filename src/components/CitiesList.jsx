@@ -4,51 +4,51 @@ import { useGlobalContext } from '../context';
 
 const CitiesList = () => {
     const { data: { citiesList, citiesData, selectedCity }, 
-            functions: { setSelectedCity, handleWeather } } = useGlobalContext();
-
+            functions: { setSelectedCity, handleWeather, getWeather, setCitiesList } } = useGlobalContext();
+            const [weatherData, setWeatherData] = useState([]);
+  
             const handleSelectCity = (city) => {
-                setSelectedCity(city);
-              };
-
-              console.log(citiesData);
+              setSelectedCity(city);
+            };
           
-    const [data, setData] = useState([]);
-
-    useEffect(() => {
-        setData(citiesData);
-        console.log(citiesData);
-    }, [citiesData])
-
-    return (
-        
-        <article className='weather__article weather__cities'>
-            {citiesList !== null && (
-            <ul>
-                {citiesList.map((city, i) => {   
-                        try {
-                            const { main: {temp} } = data[i];
-                            const { icon } = data[i].weather[0];
-                            return (
-                                <li className='weather__cities__city' 
-                                    onClick={() => handleSelectCity(city)}
-                                    key={i}>
-                                    <p>{city}</p>
-                                    <div className='weather__cities__city__information'>
-                                        <img className='weather__cities__city__information__icon' src={`http://openweathermap.org/img/wn/${icon}@2x.png`} alt="" />
-                                        <p>{Math.round(temp - 273.15)}°C</p>
-                                    </div>
-                                </li>
-                              );
-                        }
-                        catch(error) {
-                            console.log(error.message)
-                        }
-                       
-                })}
-            </ul> )}
-           
-        </article>
-    );
-};
+            useEffect(() => {
+              const fetchWeatherData = async () => {
+                const weatherData = await Promise.all(citiesList.map((city) => getWeather(city)));
+                setWeatherData(weatherData);
+              };
+              fetchWeatherData();
+            }, [citiesList]);
+            
+            return (
+              <article className='weather__article weather__cities'>
+                {citiesList !== null && (
+                  <ul>
+                    {weatherData.map((data, i) => {
+                      const city = citiesList[i];
+                      const icon = data.weather[0].icon;
+                      const temp = data.main.temp;
+                      return (
+                        <li
+                          className='weather__cities__city'
+                          onClick={() => handleSelectCity(city)}
+                          key={i}
+                        >
+                          <p>{city}</p>
+                          <div className='weather__cities__city__information'>
+                            <img
+                              className='weather__cities__city__information__icon'
+                              src={`http://openweathermap.org/img/wn/${icon}@2x.png`}
+                              alt=''
+                            />
+                            <p>{Math.round(temp - 273.15)}°C</p>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </article>
+            );
+          };
 
 export default CitiesList;

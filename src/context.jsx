@@ -4,15 +4,17 @@ import axios from 'axios';
 const AppContext = React.createContext();
 
 export const AppProvider = ({children}) => {
+    const cities = ["Poznań", "Warszawa", "Włoszczowa", "Sochaczew"];
+
     const [selectedCity, setSelectedCity] = useState('');
-    const [citiesList, setCitiesList] = useState([]);
+    const [citiesList, setCitiesList] = useState(cities);
     const [weatherData, setWeatherData] = useState();
     const [citiesData, setCitiesData] = useState([]);
     const [timeoutId, setTimeoutId] = useState(null);
 
+
     
 
-    const cities = ["Poznań", "Warszawa", "Włoszczowa", "Sochaczew"];
 
     const apiKey = process.env.REACT_APP_API_KEY;
 
@@ -22,7 +24,6 @@ export const AppProvider = ({children}) => {
     }
 
     const getWeather = (city) => {
-        console.log(`miasto: ${city}`)
         return axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}`)
         .then(res => {
             return res.data;
@@ -30,29 +31,37 @@ export const AppProvider = ({children}) => {
         .catch(error => {
             console.log(error)
         })
+       
+    }
+
+    const getCitiesData = () => {
+        console.log(citiesData)
+        const weatherList = [];
+        citiesList.map((city) => {
+            getWeather(city)
+             .then(res => {
+                 weatherList.push(res);
+             }).then(res => {
+                 setCitiesData(weatherList);
+             });
+         })
     }
 
     const handleChangeCity = (event) => {
         setSelectedCity(event.target.value);
     }
 
+    const addCity = (city) => {
+        setCitiesList(prev => prev.concat(city));
+        getCitiesData();
+    }
 
+    const removeCity = (city) => {
+        const list = citiesList.filter(name => name !== city);
+        setCitiesList(prev => list);
+    }
 
-    useEffect(() => {
-        const weatherList = [];
-            citiesList.map((city) => {
-                getWeather(city)
-                 .then(res => {
-                     weatherList.push(res);
-                 }).then(res => {
-                     setCitiesData(weatherList);
-                 });
-             })
-       
-
-
-      }, [citiesList]);
-
+    
       useEffect(() => {
 
         if (timeoutId) {
@@ -70,7 +79,9 @@ export const AppProvider = ({children}) => {
       }, [selectedCity])
 
       useEffect(() => {
-        setCitiesList(cities);
+            setTimeout(5000, () => {
+                getCitiesData();
+            })
       }, [])
 
     const data = {
@@ -81,6 +92,8 @@ export const AppProvider = ({children}) => {
     }
 
     const functions = {
+        addCity,
+        removeCity,
         setSelectedCity,
         handleChangeCity,
         handleWeather, 
