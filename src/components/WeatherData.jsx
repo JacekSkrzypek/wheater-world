@@ -8,7 +8,6 @@ const WeatherData = ({data}) => {
         const {name} = data;
         const { main: {temp, humidity} } = data;
         const { icon, description } = data.weather[0];
-
         const { data: { citiesList }, functions: { addCity, removeCity } } = useGlobalContext();
 
         const isCityInList = (city) => {
@@ -47,7 +46,6 @@ const WeatherData = ({data}) => {
                     <img className='weather-data__container__block__image' src={`http://openweathermap.org/img/wn/${icon}@2x.png`} alt="" />
                     <p className='weather-data__container__block__title'>{description}</p>
                 </div>
-               
                 <div className='weather-data__container__block'>
                     <p className='weather-data__container__block__humidity'>{humidity}%</p>
                     <p className='weather-data__container__block__title'>humidity</p>

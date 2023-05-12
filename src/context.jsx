@@ -4,17 +4,13 @@ import axios from 'axios';
 const AppContext = React.createContext();
 
 export const AppProvider = ({children}) => {
-    const cities = ["Poznań", "Warszawa", "Włoszczowa", "Sochaczew"];
+    const cities = ["Poznań", "Włoszczowa", "Sochaczew"];
 
     const [selectedCity, setSelectedCity] = useState('');
-    const [citiesList, setCitiesList] = useState(cities);
+    const [citiesList, setCitiesList] = useState(JSON.parse(localStorage.getItem("citiesList") || cities));
     const [weatherData, setWeatherData] = useState();
     const [citiesData, setCitiesData] = useState([]);
     const [timeoutId, setTimeoutId] = useState(null);
-
-
-    
-
 
     const apiKey = process.env.REACT_APP_API_KEY;
 
@@ -77,6 +73,10 @@ export const AppProvider = ({children}) => {
 
 
       }, [selectedCity])
+
+      useEffect(() => {
+        localStorage.setItem("citiesList", JSON.stringify(citiesList));
+      }, [citiesList])
 
       useEffect(() => {
             setTimeout(5000, () => {
