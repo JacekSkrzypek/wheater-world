@@ -6,7 +6,7 @@ import{ AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 const WeatherData = ({data}) => {
 
         const {name} = data;
-        const { main: {temp} } = data;
+        const { main: {temp, humidity} } = data;
         const { icon, description } = data.weather[0];
 
         const { data: { citiesList }, functions: { addCity, removeCity } } = useGlobalContext();
@@ -38,19 +38,20 @@ const WeatherData = ({data}) => {
             <h1 className='weather-data__city-name'>{name}</h1>
             <div className='weather-data__container'>
                 <div className='weather-data__container__block'>
-                    <img className='weather-data__container__block__image' src={`http://openweathermap.org/img/wn/${icon}@2x.png`} alt="" />
-                </div>
-                <div className='weather-data__container__block'>
                     <p className='weather-data__container__block__temp'>
                         {Math.round(temp - 273.15)}°C
                     </p>
+                    <p className='weather-data__container__block__title'>temperature</p>
                 </div>
                 <div className='weather-data__container__block'>
                     <img className='weather-data__container__block__image' src={`http://openweathermap.org/img/wn/${icon}@2x.png`} alt="" />
+                    <p className='weather-data__container__block__title'>{description}</p>
                 </div>
-            </div>
-            <div className='weather-data__description'>
-                {description}
+               
+                <div className='weather-data__container__block'>
+                    <p className='weather-data__container__block__humidity'>{humidity}%</p>
+                    <p className='weather-data__container__block__title'>humidity</p>
+                </div>
             </div>
         </div>
     );

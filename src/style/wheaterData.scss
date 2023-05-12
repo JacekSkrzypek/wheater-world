@@ -34,11 +34,22 @@
                 width: 90%;
             }
 
-            &__temp {
+            &__temp,
+            &__humidity {
                 font-size: 5rem;
                 color: $light-green;
+                position: relative;
             }
 
+            &__title {
+                position: absolute;
+                bottom: 0.5rem;
+                font-size: 1.7rem;
+                font-style: italic;
+                color: $light-green;
+            }
+            
+           
             
         }
     }
